@@ -126,7 +126,7 @@ class Usuario:
             
         # Remove espaços e hífens que o usuário possa ter digitado
         telefone_limpo = re.sub(r'[\s\-\(\)]', '', telefone)
-        
+        telefone_limpo = telefone_limpo.strip()
         # Verifica se sobrou algo que não seja número
         if not telefone_limpo.isdigit():
             raise UsuarioInvalidoError("Telefone deve conter apenas números")
@@ -160,6 +160,19 @@ class Usuario:
         """
         self._validar_email(novo_email)
         self.email = novo_email.strip().lower()
+
+    def atualizar_telefone(self, novo_telefone: str) -> None:
+        """
+        Atualiza o telefone do usuário com validação.
+        
+        Args:
+            novo_telefone: Novo telefone do usuário
+            
+        Raises:
+            UsuarioInvalidoError: Se novo telefone é inválido
+        """
+        self._validar_telefone(novo_telefone)
+        self.telefone = novo_telefone.strip()
     
     def ativar(self) -> None:
         """Ativa o usuário."""
