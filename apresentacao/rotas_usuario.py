@@ -32,6 +32,7 @@ def criar_usuario():
     Request Body:
         {
             "nome": "João Silva",
+            "telefone": "11999999999",
             "email": "joao@email.com"
         }
     
@@ -51,17 +52,18 @@ def criar_usuario():
         
         nome = dados.get('nome')
         email = dados.get('email')
-        
+        telefone = dados.get('telefone')
         if not nome or not email:
             return jsonify({"erro": "Nome e email são obrigatórios"}), 400
         
         # Chamar camada de serviço
-        usuario = servico_usuario.criar_usuario(nome, email)
+        usuario = servico_usuario.criar_usuario(nome, email, telefone)
         
         # Retornar resposta formatada
         return jsonify({
             "id": usuario.id,
             "nome": usuario.nome,
+            "telefone": usuario.telefone,
             "email": usuario.email,
             "ativo": usuario.ativo
         }), 201
@@ -96,6 +98,7 @@ def obter_usuario(usuario_id):
         return jsonify({
             "id": usuario.id,
             "nome": usuario.nome,
+            "telefone": usuario.telefone,
             "email": usuario.email,
             "ativo": usuario.ativo
         }), 200
@@ -161,8 +164,8 @@ def atualizar_usuario(usuario_id):
         
         nome = dados.get('nome')
         email = dados.get('email')
-        
-        usuario = servico_usuario.atualizar_usuario(usuario_id, nome, email)
+        telefone = dados.get('telefone')
+        usuario = servico_usuario.atualizar_usuario(usuario_id, nome, email, telefone)
         
         if not usuario:
             return jsonify({"erro": "Usuário não encontrado"}), 404
@@ -170,6 +173,7 @@ def atualizar_usuario(usuario_id):
         return jsonify({
             "id": usuario.id,
             "nome": usuario.nome,
+            "telefone": usuario.telefone,
             "email": usuario.email,
             "ativo": usuario.ativo
         }), 200
