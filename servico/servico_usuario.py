@@ -22,9 +22,23 @@ class ServicoUsuario:
     Serviço responsável pela lógica de negócio de usuários.
     """
     
-    def __init__(self):
-        """Inicializa o serviço com suas dependências."""
-        self.repositorio = RepositorioUsuario()
+class ServicoUsuario:
+    """
+    Serviço responsável pela lógica de negócio de usuários.
+    """
+    # CORREÇÃO: O repositório agora é injetado via parâmetro no construtor.
+    def __init__(self, repositorio=None):
+        """
+        Inicializa o serviço com suas dependências.
+        Aplica Injeção de Dependência para respeitar o DIP.
+        """
+        # Se nenhum repositório for injetado, usa o padrão, 
+        # mas permite que outras implementações sejam passadas.
+        if repositorio is None:
+            from repositorio.repositorio_usuario import RepositorioUsuario
+            self.repositorio = RepositorioUsuario()
+        else:
+            self.repositorio = repositorio
     
     def criar_usuario(self, nome: str, telefone: str = None, email: str) -> Usuario:
         """
